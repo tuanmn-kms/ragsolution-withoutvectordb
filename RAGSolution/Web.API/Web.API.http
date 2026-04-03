@@ -1,0 +1,68 @@
+@Web.API_HostAddress = http://localhost:5228
+
+GET {{Web.API_HostAddress}}/api/rag/health
+Accept: application/json
+
+###
+
+POST {{Web.API_HostAddress}}/api/rag/ingest
+Content-Type: application/json
+
+{
+	"id": "doc-001",
+	"title": "RAG without vector database",
+	"content": "Retrieval-augmented generation can work without embeddings by using lexical matching. Documents are split into chunks. A question is tokenized and scored against chunk terms. Top-ranked chunks are used to build an answer.",
+	"metadata": {
+		"source": "demo"
+	}
+}
+
+###
+
+POST {{Web.API_HostAddress}}/api/rag/ingest/batch
+Content-Type: application/json
+
+{
+	"documents": [
+		{
+			"id": "doc-002",
+			"title": "Chunking",
+			"content": "Chunking breaks long text into smaller parts for retrieval.",
+			"metadata": {
+				"source": "batch"
+			}
+		},
+		{
+			"id": "doc-003",
+			"title": "Scoring",
+			"content": "The retriever scores chunks using lexical term overlap and picks top results.",
+			"metadata": {
+				"source": "batch"
+			}
+		}
+	]
+}
+
+###
+
+POST {{Web.API_HostAddress}}/api/rag/question
+Content-Type: application/json
+
+{
+	"question": "How does retrieval work in this project?",
+	"topK": 3,
+	"maxAnswerSentences": 3
+}
+
+###
+
+POST {{Web.API_HostAddress}}/api/rag/answer
+Content-Type: application/json
+
+{
+	"question": "What happens before answering?",
+	"topK": 2,
+	"maxAnswerSentences": 2
+}
+
+###

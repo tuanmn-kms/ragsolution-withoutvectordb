@@ -1,0 +1,157 @@
+### MCP (Model Context Protocol) Endpoints
+### Test file for MCP integration
+
+@baseUrl = https://localhost:7058
+# OR use HTTP
+# @baseUrl = http://localhost:5000
+
+### 1. Get MCP Server Information
+GET {{baseUrl}}/api/mcp/info
+
+### 2. List Available MCP Tools
+GET {{baseUrl}}/api/mcp/tools
+
+### 3. Execute Health Check Tool
+POST {{baseUrl}}/api/mcp/tools/health_check
+Content-Type: application/json
+
+{}
+
+### 4. Execute Ingest Document Tool
+POST {{baseUrl}}/api/mcp/tools/ingest_document
+Content-Type: application/json
+
+{
+  "id": "mcp-test-doc",
+  "title": "MCP Integration Test",
+  "content": "This is a test document for MCP (Model Context Protocol) integration. It demonstrates how AI assistants can interact with the RAG system through standardized MCP tools.",
+  "metadata": {
+    "source": "mcp-test",
+    "category": "testing",
+    "author": "System"
+  }
+}
+
+### 5. Execute List Documents Tool
+POST {{baseUrl}}/api/mcp/tools/list_documents
+Content-Type: application/json
+
+{}
+
+### 6. Execute Search Documents Tool
+POST {{baseUrl}}/api/mcp/tools/search_documents
+Content-Type: application/json
+
+{
+  "query": "MCP",
+  "limit": 10
+}
+
+### 7. Execute Get Document Tool
+POST {{baseUrl}}/api/mcp/tools/get_document
+Content-Type: application/json
+
+{
+  "id": "mcp-test-doc"
+}
+
+### 8. Execute Ask Question Tool
+POST {{baseUrl}}/api/mcp/tools/ask_question
+Content-Type: application/json
+
+{
+  "question": "What is MCP?",
+  "topK": 3,
+  "maxAnswerSentences": 3
+}
+
+### 9. MCP JSON-RPC: Initialize
+POST {{baseUrl}}/api/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2024-11-05",
+    "clientInfo": {
+      "name": "test-client",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### 10. MCP JSON-RPC: List Tools
+POST {{baseUrl}}/api/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list"
+}
+
+### 11. MCP JSON-RPC: Call Tool (Ingest)
+POST {{baseUrl}}/api/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "ingest_document",
+    "arguments": {
+      "id": "jsonrpc-test",
+      "title": "JSON-RPC Test Document",
+      "content": "This document was ingested using the JSON-RPC MCP protocol.",
+      "metadata": {
+        "protocol": "json-rpc"
+      }
+    }
+  }
+}
+
+### 12. MCP JSON-RPC: Call Tool (Ask Question)
+POST {{baseUrl}}/api/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "ask_question",
+    "arguments": {
+      "question": "What testing protocols are mentioned?",
+      "topK": 5
+    }
+  }
+}
+
+### 13. Error Test: Unknown Tool
+POST {{baseUrl}}/api/mcp/tools/unknown_tool
+Content-Type: application/json
+
+{}
+
+### 14. Error Test: Invalid Method (JSON-RPC)
+POST {{baseUrl}}/api/mcp
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 99,
+  "method": "invalid/method"
+}
+
+### 15. Complex Question with Multiple Sources
+POST {{baseUrl}}/api/mcp/tools/ask_question
+Content-Type: application/json
+
+{
+  "question": "How does the system work and what are its capabilities?",
+  "topK": 5,
+  "maxAnswerSentences": 5
+}

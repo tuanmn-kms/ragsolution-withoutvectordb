@@ -1,0 +1,46 @@
+{
+  "ConnectionStrings": {
+    "RagSqlServer": "Server=YOUR_SERVER;Database=RAGWithoutVectorDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
+  },
+  "AI": {
+    "Provider": "OpenAI"
+  },
+  "OpenAI": {
+    "ApiKey": "YOUR_OPENAI_API_KEY",
+    "Model": "gpt-4o-mini"
+  },
+  "AzureOpenAI": {
+    "Endpoint": "https://YOUR-RESOURCE-NAME.openai.azure.com/",
+    "ApiKey": "YOUR_AZURE_OPENAI_API_KEY",
+    "DeploymentName": "gpt-4o-mini"
+  },
+  "Rag": {
+    "SeedDocuments": [
+      {
+        "Id": "seed-architecture-overview",
+        "Title": "RAG Architecture Overview",
+        "Content": "This solution uses ASP.NET Core Web API and a React Vite UI. The API stores documents in SQL Server and retrieves relevant text chunks by lexical overlap instead of a vector database. The in-memory RAG service loads documents from SQL, ranks chunk relevance, and synthesizes concise answers from top-ranked passages.",
+        "Metadata": {
+          "source": "seed",
+          "path": "docs/architecture-overview.md"
+        }
+      },
+      {
+        "Id": "seed-operational-notes",
+        "Title": "Operational Notes",
+        "Content": "Before asking questions, ingest documents through the /api/rag/ingest endpoint. Use /api/rag/health to verify SQL connectivity. The /api/rag/ask, /api/rag/question, and /api/rag/answer endpoints accept the same request model and return grounded responses with source snippets when relevant context is found.",
+        "Metadata": {
+          "source": "seed",
+          "path": "docs/operational-notes.md"
+        }
+      }
+    ]
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
