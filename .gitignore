@@ -5,3 +5,4 @@ RAGSolution/web.ui/obj/
 RAGSolution/Web.API/.env
 /RAGSolution/Web.API/DOCs.md
 .vs/
+*.lscache
